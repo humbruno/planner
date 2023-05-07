@@ -7,7 +7,9 @@ export const firestore = initFirestore({
   credential: cert({
     projectId: env.FIREBASE_PROJECT_ID,
     clientEmail: env.FIREBASE_CLIENT_EMAIL,
-    privateKey: env.FIREBASE_PRIVATE_KEY,
+    privateKey: env.FIREBASE_PRIVATE_KEY
+      ? JSON.parse(env.FIREBASE_PRIVATE_KEY)
+      : undefined,
   }),
 });
 
