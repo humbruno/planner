@@ -1,19 +1,9 @@
-import { type NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { getServerAuthSession } from "~/server/auth";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!session) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.replace("/login");
-    }
-  }, [session, router]);
 
   return (
     <>
@@ -24,3 +14,16 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerAuthSession(ctx);
+
+  // If the user is not logged in, redirect to log in page
+  if (!session) {
+    return { redirect: { destination: "/login" } };
+  }
+
+  return {
+    props: {},
+  };
+};

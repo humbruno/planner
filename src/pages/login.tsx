@@ -1,15 +1,13 @@
-import { type GetServerSideProps, type NextPage } from "next";
-import { type BuiltInProviderType } from "next-auth/providers";
+import type { NextPage, GetServerSidePropsContext } from "next";
+import type { BuiltInProviderType } from "next-auth/providers";
 import {
   type ClientSafeProvider,
   type LiteralUnion,
   getProviders,
   signIn,
-  useSession,
 } from "next-auth/react";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
 import LoginButton from "~/components/LoginButton";
+import { getServerAuthSession } from "~/server/auth";
 
 interface Props {
   providers: Record<
@@ -19,21 +17,14 @@ interface Props {
 }
 
 const Login: NextPage<Props> = ({ providers }) => {
-  const { data: session } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (session) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.replace("/");
-    }
-  }, [session, router]);
-
   return (
     <main className="container flex min-h-screen min-w-full items-center justify-center bg-slate-900">
       <div className="container-md flex flex-col items-center justify-center gap-3 rounded-3xl bg-slate-700 px-20 py-10">
         {Object.values(providers).map((provider) => (
-          <LoginButton key={provider.name} onClick={() => signIn(provider.id)}>
+          <LoginButton
+            key={provider.name}
+            onClick={() => signIn(provider.id, { callbackUrl: "/" })}
+          >
             Login with {provider.name}
           </LoginButton>
         ))}
@@ -44,7 +35,14 @@ const Login: NextPage<Props> = ({ providers }) => {
 
 export default Login;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerAuthSession(ctx);
+
+  // If the user is already logged in, redirect to home page.
+  if (session) {
+    return { redirect: { destination: "/" } };
+  }
+
   const providers = await getProviders();
 
   return {
