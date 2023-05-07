@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { initFirestore } from "@next-auth/firebase-adapter";
 import { cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
@@ -8,6 +7,7 @@ export const firestore = initFirestore({
   credential: cert({
     projectId: env.FIREBASE_PROJECT_ID,
     clientEmail: env.FIREBASE_CLIENT_EMAIL,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     privateKey: env.FIREBASE_PRIVATE_KEY
       ? JSON.parse(env.FIREBASE_PRIVATE_KEY)
       : undefined,

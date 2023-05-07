@@ -23,7 +23,9 @@ const Login: NextPage<Props> = ({ providers }) => {
         {Object.values(providers).map((provider) => (
           <LoginButton
             key={provider.name}
-            onClick={() => signIn(provider.id, { callbackUrl: "/" })}
+            onClick={() =>
+              signIn(provider.id, { callbackUrl: "/" }, { prompt: "none" })
+            }
           >
             Login with {provider.name}
           </LoginButton>
