@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { initFirestore } from "@next-auth/firebase-adapter";
 import { cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
