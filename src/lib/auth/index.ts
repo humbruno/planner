@@ -1,4 +1,4 @@
-import { FirestoreAdapter } from "@next-auth/firebase-adapter";
+import { SupabaseAdapter } from "@next-auth/supabase-adapter";
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
@@ -10,7 +10,6 @@ import DiscordProvider, {
   type DiscordProfile,
 } from "next-auth/providers/discord";
 import { env } from "~/env.mjs";
-import { firestore } from "~/lib/firestore";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -39,7 +38,10 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
-  adapter: FirestoreAdapter(firestore),
+  adapter: SupabaseAdapter({
+    url: env.NEXT_PUBLIC_SUPABASE_URL,
+    secret: env.SUPABASE_SERVICE_ROLE_KEY,
+  }),
   callbacks: {
     session: ({ session, user }) => ({
       ...session,

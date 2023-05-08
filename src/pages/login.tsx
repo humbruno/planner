@@ -7,7 +7,7 @@ import {
   signIn,
 } from "next-auth/react";
 import LoginButton from "~/components/LoginButton";
-import { getServerAuthSession } from "~/server/auth";
+import { getServerAuthSession } from "~/lib/auth";
 
 interface Props {
   providers: Record<
@@ -23,9 +23,7 @@ const Login: NextPage<Props> = ({ providers }) => {
         {Object.values(providers).map((provider) => (
           <LoginButton
             key={provider.name}
-            onClick={() =>
-              signIn(provider.id, { callbackUrl: "/" }, { prompt: "none" })
-            }
+            onClick={() => signIn(provider.id, { callbackUrl: "/" })}
           >
             Login with {provider.name}
           </LoginButton>
