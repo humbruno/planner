@@ -19,7 +19,7 @@ interface Props {
 const Login: NextPage<Props> = ({ providers }) => {
   return (
     <main className="container flex min-h-screen min-w-full items-center justify-center bg-slate-900">
-      <div className="container-md flex flex-col items-center justify-center gap-3 rounded-3xl bg-slate-700 px-20 py-10">
+      <div className="container-md flex flex-col items-center justify-center gap-3">
         {Object.values(providers).map((provider) => (
           <LoginButton
             key={provider.name}

@@ -1,8 +1,11 @@
-import type { GetServerSidePropsContext, NextPage } from "next";
+import type { GetServerSidePropsContext } from "next";
 import { useSession, signOut } from "next-auth/react";
 import { getServerAuthSession } from "~/lib/auth";
+import { type NextPageWithLayout } from "~/pages/_app";
+import { ReactElement } from "react";
+import AppLayout from "~/components/layouts/AppLayout";
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
   const { data: session } = useSession();
 
   return (
@@ -14,6 +17,10 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <AppLayout>{page}</AppLayout>;
+};
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);

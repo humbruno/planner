@@ -1,3 +1,5 @@
+import { off } from "process";
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require("path");
 
@@ -21,6 +23,7 @@ const config = {
   plugins: ["@typescript-eslint"],
   extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   rules: {
+    "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
