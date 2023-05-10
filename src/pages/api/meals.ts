@@ -11,7 +11,7 @@ export default async function handler(
     const session = await getServerSession(req, res, authOptions);
     const { data } = await supabase
       .from("meal")
-      .select()
+      .select("id, name, ingredients")
       .eq("user_id", session?.user.id);
     return res.status(200).json({ data });
   } else {

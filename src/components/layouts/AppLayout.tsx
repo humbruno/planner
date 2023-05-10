@@ -5,7 +5,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex">
       <Sidebar />
-      <main>{children}</main>
+      <main className="min-h-screen w-full bg-slate-300 pl-52">{children}</main>
     </div>
   );
 };
